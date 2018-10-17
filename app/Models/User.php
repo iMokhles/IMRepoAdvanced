@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Analytics\Download;
 use App\Models\Social\Review;
 use App\Notifications\User\UserResetPasswordNotification;
 use App\Notifications\User\UserVerifyEmailNotification;
@@ -147,5 +148,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function reviews()
     {
         return $this->hasMany(Review::class, 'user_id');
+    }
+
+    /**
+     * Return user's downloads
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function downloads()
+    {
+        return $this->hasMany(Download::class, 'user_id');
     }
 }

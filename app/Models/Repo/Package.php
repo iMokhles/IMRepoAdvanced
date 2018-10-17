@@ -3,15 +3,21 @@
 namespace App\Models\Repo;
 
 use App\Models\Admin;
+use App\Models\Analytics\Download;
 use App\Models\Social\Review;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 use Spatie\ModelStatus\HasStatuses;
 
-class Package extends Model
+class Package extends Model implements HasMedia
 {
     use CrudTrait;
+    use HasMediaTrait;
     use HasStatuses;
     use LogsActivity;
 
@@ -79,6 +85,26 @@ class Package extends Model
     protected $guarded = ['id'];
 
     /**
+     * @param Media|null $media
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->width(130)
+            ->height(230);
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\InvalidBase64Data
+     */
+    public function uploadImage(Request $request) {
+        $this->addMediaFromBase64($request->input("image"))->toMediaCollection('media', 'screenshots_disk');
+    }
+
+    /**
      * @param string $name
      * @param string $reason
      * @return bool
@@ -111,5 +137,25 @@ class Package extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class, 'package_id');
+    }
+
+    /**
+     * Return packages's change logs list
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function changeLogs()
+    {
+        return $this->hasMany(ChangeLog::class, 'package_id');
+    }
+
+    /**
+     * Return packages's downloads
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function downloads()
+    {
+        return $this->hasMany(Download::class, 'package_id');
     }
 }

@@ -59,7 +59,7 @@ class CreatePackagesTable extends Migration
             $table->text('Author')->nullable();
             $table->text('Sponsor')->nullable();
 
-            $table->string('package_hash')->nullable();
+            $table->string('package_hash')->default(\Illuminate\Support\Str::random(30));
             $table->timestamps();
         });
     }

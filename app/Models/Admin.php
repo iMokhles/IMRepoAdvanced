@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Repo\ChangeLog;
 use App\Models\Repo\Package;
 use App\Models\Social\Review;
 use App\Notifications\Admin\AdminResetPasswordNotification;
@@ -158,5 +159,15 @@ class Admin extends Authenticatable implements MustVerifyEmail, HasMedia
     public function packages()
     {
         return $this->hasMany(Package::class, 'admin_id');
+    }
+
+    /**
+     * Return admin's change logs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function changeLogs()
+    {
+        return $this->hasMany(ChangeLog::class, 'admin_id');
     }
 }

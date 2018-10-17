@@ -28,7 +28,7 @@ class CreateReviewsTable extends Migration
                 ->references('id')->on('admins')
                 ->onDelete('cascade');
 
-            // package reviews
+            // reviewed package
             $table->unsignedInteger('package_id');
             $table->foreign('package_id')
                 ->references('id')->on('packages')
