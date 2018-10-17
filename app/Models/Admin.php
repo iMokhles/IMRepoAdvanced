@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Repo\Package;
 use App\Models\Social\Review;
 use App\Notifications\Admin\AdminResetPasswordNotification;
 use App\Notifications\Admin\AdminVerifyEmailNotification;
@@ -147,5 +148,15 @@ class Admin extends Authenticatable implements MustVerifyEmail, HasMedia
     public function reviews()
     {
         return $this->hasMany(Review::class, 'admin_id');
+    }
+
+    /**
+     * Return admin's packages
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function packages()
+    {
+        return $this->hasMany(Package::class, 'admin_id');
     }
 }

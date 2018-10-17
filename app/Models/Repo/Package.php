@@ -2,6 +2,7 @@
 
 namespace App\Models\Repo;
 
+use App\Models\Admin;
 use App\Models\Social\Review;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,40 @@ class Package extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'package_id', 'package_version', 'comment', 'rate',
+        'admin_id',
+
+        'Package',
+        'Source',
+        'Version',
+        'Priority',
+        'Section',
+        'Architecture',
+        'Essential',
+        'Maintainer',
+        'Pre-Depends',
+        'Depends',
+        'Recommends',
+        'Suggests',
+        'Conflicts',
+        'Enhances',
+        'Breaks',
+        'Filename',
+        'Size',
+        'Installed-Size',
+        'Description',
+        'Homepage',
+        'Website',
+        'Depiction',
+        'Icon',
+        'MD5sum',
+        'SHA1',
+        'SHA256',
+        'Origin',
+        'Bugs',
+        'Name',
+        'Author',
+        'Sponsor',
+        'package_hash',
     ];
 
     /**
@@ -57,6 +91,16 @@ class Package extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Return uploader of this package
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function uploader()
+    {
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 
     /**
